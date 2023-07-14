@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-using Data_Access_Layer.Models;
-using System.Xml.Linq;
+﻿using Data_Access_Layer.Models;
 using Data_Access_Layer.Contracts;
 using Microsoft.Extensions.Configuration;
 using System.Data;
@@ -25,72 +18,85 @@ namespace Data_Access_Layer.DataAccess
 
         public List<Department> GetDepartmentDetails()
         {
-            List<Department> departments = new List<Department>();
+            try {
+                List<Department> departments = new List<Department>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                
-                SqlCommand command = new SqlCommand("GetDepartment", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                SqlDataReader reader = command.ExecuteReader();
-
-
-                while (reader.Read())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    Department department = new Department
+                    connection.Open();
+
+
+                    SqlCommand command = new SqlCommand("GetDepartment", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader reader = command.ExecuteReader();
+
+
+                    while (reader.Read())
                     {
+                        Department department = new Department
+                        {
 
-                        Dept_Id = reader["Dept_Id"].ToString(),
-                        Dept_Name = reader["Dept_Name"].ToString()
-                    };
+                            Dept_Id = reader["Dept_Id"].ToString(),
+                            Dept_Name = reader["Dept_Name"].ToString()
+                        };
 
-                departments.Add(department);
+                        departments.Add(department);
+                    }
+
+                    reader.Close();
                 }
 
-            reader.Close();
+                return (departments);
             }
-
-           return (departments);
-        }
+            catch (Exception)
+            {
+                throw;
+            }
+         }
 
 
 
         public string AddPhysician(Physician_Enroll physician)
 
         {
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-
+            try
             {
 
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(connectionString))
 
-                SqlCommand command = new SqlCommand("AddPhysicianDetails", connection);
-                command.CommandType = CommandType.StoredProcedure;
+                {
 
-                command.Parameters.AddWithValue("@Phy_Id", physician.Phy_Id);
+                    connection.Open();
 
-                command.Parameters.AddWithValue("@Phy_Fname", physician.Phy_Fname);
+                    SqlCommand command = new SqlCommand("AddPhysicianDetails", connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@Phy_Lname", physician.Phy_Lname);
+                    command.Parameters.AddWithValue("@Phy_Id", physician.Phy_Id);
 
-                command.Parameters.AddWithValue("@Dept_Id", physician.Dept_Id);
+                    command.Parameters.AddWithValue("@Phy_Fname", physician.Phy_Fname);
 
-                command.Parameters.AddWithValue("@Phy_Exp", physician.Phy_Exp);
+                    command.Parameters.AddWithValue("@Phy_Lname", physician.Phy_Lname);
 
-                command.Parameters.AddWithValue("@Phy_State", physician.Phy_State);
+                    command.Parameters.AddWithValue("@Dept_Id", physician.Dept_Id);
 
-                command.Parameters.AddWithValue("@InsurancePlan", physician.InsurancePlan);
+                    command.Parameters.AddWithValue("@Phy_Exp", physician.Phy_Exp);
 
-                command.ExecuteNonQuery();
+                    command.Parameters.AddWithValue("@Phy_State", physician.Phy_State);
+
+                    command.Parameters.AddWithValue("@InsurancePlan", physician.InsurancePlan);
+
+                    command.ExecuteNonQuery();
 
 
 
-            }
+                }
 
                 return "Physician data added successfully";
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
 
         }
@@ -98,59 +104,73 @@ namespace Data_Access_Layer.DataAccess
 
         public string UpdateDepartmentdetails(string DeptName, Department department)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
 
 
 
 
 
-               
-                SqlCommand command = new SqlCommand("UpdateDepartmentDetails", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Dept_Id", department.Dept_Id);
-                command.Parameters.AddWithValue("@Search", DeptName);
-                command.Parameters.AddWithValue("@Dept_Name", department.Dept_Name);
-                command.ExecuteNonQuery();
+
+                    SqlCommand command = new SqlCommand("UpdateDepartmentDetails", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Dept_Id", department.Dept_Id);
+                    command.Parameters.AddWithValue("@Search", DeptName);
+                    command.Parameters.AddWithValue("@Dept_Name", department.Dept_Name);
+                    command.ExecuteNonQuery();
+                }
+
+
+
+
+
+                return "Department details has been updated successfully";
             }
-
-
-
-
-
-            return "Department details has been updated successfully";
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public string GetInsurance(string id)
         {
-            string insurance = null;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
+                string insurance = null;
 
-                ;
-                SqlCommand command = new SqlCommand("GetPhysicianInsurance", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Phy_Id", id);
-                SqlDataReader reader = command.ExecuteReader();
-
-
-                if (reader.Read())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    insurance = reader["InsurancePlan"].ToString();
+                    connection.Open();
+
+                    ;
+                    SqlCommand command = new SqlCommand("GetPhysicianInsurance", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Phy_Id", id);
+                    SqlDataReader reader = command.ExecuteReader();
+
+
+                    if (reader.Read())
+                    {
+                        insurance = reader["InsurancePlan"].ToString();
+                    }
+
+                    reader.Close();
                 }
 
-                reader.Close();
+                if (insurance == null)
+                    return "Not Found";
+
+
+
+                return (insurance);
             }
-
-            if (insurance == null)
-                return "Not Found";
-
-
-
-            return (insurance);
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 

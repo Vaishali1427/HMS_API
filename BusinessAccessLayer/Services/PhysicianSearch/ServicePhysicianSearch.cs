@@ -1,14 +1,6 @@
-﻿using Business_Logic_Layer.Services.Physician;
-using Business_Logic_Layer.Services.PhysicianSearch;
-using Business_Logic_Layer.Services.PhysiciansSearch;
+﻿using Business_Logic_Layer.Services.PhysiciansSearch;
 using Data_Access_Layer.Contracts;
-using Data_Access_Layer.DataAccess;
 using Data_Access_Layer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services.PhysicianSearch
 {

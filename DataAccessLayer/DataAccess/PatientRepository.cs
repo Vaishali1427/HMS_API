@@ -2,7 +2,6 @@
 using Data_Access_Layer.Contracts;
 using Data_Access_Layer.Models;
 using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -20,92 +19,113 @@ namespace Data_Access_Layer.DataAccess
 
         public string AddPatientDetails(Patient patient)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
 
 
 
-                // Create and execute the SQL command to insert the patient details
-                SqlCommand command = new SqlCommand("AddPatient", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Patient_Id", patient.Patient_Id);
-                command.Parameters.AddWithValue("@Patient_Fname", patient.FirstName);
-                command.Parameters.AddWithValue("@Patient_Lname", patient.LastName);
-                command.Parameters.AddWithValue("@Patient_Dob", patient.DateOfBirth);
-                command.Parameters.AddWithValue("@Patient_Email", patient.Email);
-                command.Parameters.AddWithValue("@Patient_Contact", patient.PhoneNo);
-                command.Parameters.AddWithValue("@Patient_State", patient.State);
-                command.Parameters.AddWithValue("@Insurance", patient.Insurance);
+                    // Create and execute the SQL command to insert the patient details
+                    SqlCommand command = new SqlCommand("AddPatient", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Patient_Id", patient.Patient_Id);
+                    command.Parameters.AddWithValue("@Patient_Fname", patient.FirstName);
+                    command.Parameters.AddWithValue("@Patient_Lname", patient.LastName);
+                    command.Parameters.AddWithValue("@Patient_Dob", patient.DateOfBirth);
+                    command.Parameters.AddWithValue("@Patient_Email", patient.Email);
+                    command.Parameters.AddWithValue("@Patient_Contact", patient.PhoneNo);
+                    command.Parameters.AddWithValue("@Patient_State", patient.State);
+                    command.Parameters.AddWithValue("@Insurance", patient.Insurance);
 
 
 
-                command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
 
 
 
-                // Return a success response
-                return "Patient details added successfully.";
+                    // Return a success response
+                    return "Patient details added successfully.";
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
         public string GetInsuranceDetails(int id)
         {
-            string insurance = null;
+            try {
+                string insurance = null;
 
 
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                SqlCommand command = new SqlCommand("GetInsurance", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Patient_Id", id);
-                SqlDataReader reader = command.ExecuteReader();
-
-
-
-                if (reader.Read())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    insurance = reader["Insurance"].ToString();
+                    connection.Open();
 
-                }
+                    SqlCommand command = new SqlCommand("GetInsurance", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Patient_Id", id);
+                    SqlDataReader reader = command.ExecuteReader();
+
+
+
+                    if (reader.Read())
+                    {
+                        insurance = reader["Insurance"].ToString();
+
+                    }
 
                     reader.Close();
+                }
+
+
+
+                if (insurance == null)
+                    return "Not Found";
+
+
+
+                return (insurance);
             }
-
-
-
-            if (insurance == null)
-                return "Not Found";
-
-
-
-            return (insurance);
+            catch (Exception)
+            {
+                throw;
+            }
         }
+        
 
         public string UpdateInsuranceDetails(int id, Patient_Enroll insurance)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
 
 
 
-                connection.Open();
+                    connection.Open();
 
 
-                SqlCommand command = new SqlCommand("UpdateInsurance", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Patient_Id", id);
-                command.Parameters.AddWithValue("@Insurance", insurance.Insurance);
-                command.ExecuteNonQuery();
+                    SqlCommand command = new SqlCommand("UpdateInsurance", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Patient_Id", id);
+                    command.Parameters.AddWithValue("@Insurance", insurance.Insurance);
+                    command.ExecuteNonQuery();
+                }
+
+                return "Insurance Plan has been updated";
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
-
-
-            return "Insurance Plan has been updated";
         }
+            
 
     }
 }

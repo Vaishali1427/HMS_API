@@ -1,9 +1,4 @@
 ﻿using Data_Access_Layer.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services.Login
 {
@@ -14,6 +9,7 @@ namespace Business_Logic_Layer.Services.Login
         public ServiceLogin(ILoginRepository iLoginRepository)
         {
             _iLoginRepository = iLoginRepository;
+
         }
 
 
@@ -21,10 +17,14 @@ namespace Business_Logic_Layer.Services.Login
         public string AuthenticateUser(string userId, string password)
         {
             try
-            { return _iLoginRepository.AuthenticateUser(userId, password); }
-            catch (Exception)
-            { throw; }
+            {
 
+                return _iLoginRepository.AuthenticateUser(userId, password);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

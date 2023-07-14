@@ -21,15 +21,31 @@ namespace HMS_API.Controllers
         }
 
         [HttpPost("/AddDiagnosisDetails")]
-        public string AddDiagnosisDetails(Patient_Diagnosis physician)
+        public IActionResult AddDiagnosisDetails(Patient_Diagnosis physician)
         {
-            return _IservicePatientDiagnosisDetails.AddDiagnosisDetails(physician);
+            try
+            {
+                string result = _IservicePatientDiagnosisDetails.AddDiagnosisDetails(physician);
+                return Ok(result);
+            }
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the diagnosis details.");
+            }
         }
 
         [HttpGet("/GetPhysicianVisitedDetails")]
-        public List<string> GetPhysicianVisitedDetails()
+        public IActionResult GetPhysicianVisitedDetails()
         {
-            return _IservicePatientDiagnosisDetails.GetPhysicianVisitedDetails();
+            try
+            {
+                List<string> result = _IservicePatientDiagnosisDetails.GetPhysicianVisitedDetails();
+                return Ok(result.ToList());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving physician visited details.");
+            }
         }
 
 

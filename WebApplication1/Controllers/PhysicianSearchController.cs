@@ -21,21 +21,45 @@ namespace HMS_API.Controllers
         }
 
         [HttpGet("/GetInsuranceDetails")]
-        public List<string> GetInsurance()
+        public IActionResult GetInsurance()
         {
-            return _IservicePhysicianSearch.GetInsurance();
+            try
+            {
+                List<string> result = _IservicePhysicianSearch.GetInsurance();
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpGet("/GetDepartmentDetails")]
-        public List<Department> GetDepartmentDetails()
+        public IActionResult GetDepartmentDetails()
         {
-            return _IservicePhysicianSearch.GetDepartmentDetails();
+            try
+            {
+                List<Department> result = _IservicePhysicianSearch.GetDepartmentDetails();
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpGet("/SearchPhysician")]
-        public Physician_Search GetPhysician(PhysicianSearchArguments physicianSearchArguments)
+        public IActionResult GetPhysician(PhysicianSearchArguments physicianSearchArguments)
         {
-            return _IservicePhysicianSearch.GetPhysician(physicianSearchArguments);
+            try
+            {
+                Physician_Search result = _IservicePhysicianSearch.GetPhysician(physicianSearchArguments);
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
     }
 }

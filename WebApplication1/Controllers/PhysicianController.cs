@@ -22,27 +22,59 @@ namespace HMS_API.Controllers
         }
 
         [HttpGet("/GetPhysicianDepartmentDetails")]
-         public List<Department> GetDepartmentDetails()
+         public IActionResult GetDepartmentDetails()
         {
-            return _IservicePhysician.GetDepartmentDetails();
+            try
+            {
+                List<Department> result = _IservicePhysician.GetDepartmentDetails();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpPost("/AddPhysician")]
-        public string AddPhysician(Physician_Enroll physician)
+        public IActionResult AddPhysician(Physician_Enroll physician)
         {
-            return _IservicePhysician.AddPhysician(physician);
+            try
+            {
+                string result = _IservicePhysician.AddPhysician(physician);
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpPut("/UpdateDepartmentDetails")]
-        public string UpdateDepartmentdetails(string DeptName, Department department)
+        public IActionResult UpdateDepartmentdetails(string DeptName, Department department)
         {
-            return _IservicePhysician.UpdateDepartmentdetails(DeptName, department);
+            try
+            {
+                string result = _IservicePhysician.UpdateDepartmentdetails(DeptName, department);
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpGet("/GetPhysicianInsuranceDetails")]
-        public string GetInsurance(string id)
+        public IActionResult GetInsurance(string id)
         {
-            return _IservicePhysician.GetInsurance(id);
+            try
+            {
+                string result = _IservicePhysician.GetInsurance(id);
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
     }

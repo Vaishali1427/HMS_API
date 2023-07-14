@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Data_Access_Layer.Models;
+﻿using Data_Access_Layer.Models;
 using Data_Access_Layer.Contracts;
 
 namespace Business_Logic_Layer.Services.PatientDiagnosisDetails
@@ -36,7 +31,7 @@ namespace Business_Logic_Layer.Services.PatientDiagnosisDetails
             {
                 return _IpatientDiagnosisDetails.GetPhysicianVisitedDetails().ToList();
             }
-            catch (Exception)
+            catch(Exception)
             {
                 throw;
             }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace Data_Access_Layer.Models
@@ -18,7 +13,6 @@ namespace Data_Access_Layer.Models
         [Required(ErrorMessage = "This field is required.")]
         [StringLength(50, ErrorMessage = "Max 50 characters!")]
         public string? firstname { get; set; }
-
 
 
         [Required(ErrorMessage = "This field is required.")]

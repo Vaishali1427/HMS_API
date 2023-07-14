@@ -1,12 +1,6 @@
 ﻿using Data_Access_Layer.Contracts;
 using Data_Access_Layer.Models;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using Microsoft.Data.SqlClient;
 
@@ -23,71 +17,87 @@ namespace Data_Access_Layer.DataAccess
 
         public List<string> GetSymptoms()
         {
-            List<string> symptoms = new List<string>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
+                List<string> symptoms = new List<string>();
 
-
-                SqlCommand command = new SqlCommand("GetSymptoms", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                SqlDataReader reader = command.ExecuteReader();
-
-
-                while (reader.Read())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
+                    connection.Open();
 
-                   string symptom = reader["Symptoms"].ToString();
-                    symptoms.Add(symptom);
-                }
+
+                    SqlCommand command = new SqlCommand("GetSymptoms", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader reader = command.ExecuteReader();
+
+
+                    while (reader.Read())
+                    {
+
+                        string symptom = reader["Symptoms"].ToString();
+                        symptoms.Add(symptom);
+                    }
 
                     reader.Close();
-            }
+                }
 
-            if (symptoms == null)
-            
-                return null;
-            
-            return (symptoms);
+                if (symptoms == null)
+
+                    return null;
+
+                return (symptoms);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public List<view_patient_history> GetPatientHistory()
         {
-            List<view_patient_history> patient_Histories = new List<view_patient_history>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
+                List<view_patient_history> patient_Histories = new List<view_patient_history>();
 
-                
-                SqlCommand command = new SqlCommand("ViewPatientHistory", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                SqlDataReader reader = command.ExecuteReader();
-
-
-
-
-
-                while (reader.Read())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    view_patient_history patient_History = new view_patient_history
-                    {
-                        Patient_Id = Convert.ToInt32(reader["Patient_Id"]),
-                        firstname = reader["firstname"].ToString(),
-                        lastname = reader["lastname"].ToString(),
-                        Phy_Id = reader["Phy_Id"].ToString()
-                    };
+                    connection.Open();
 
-                    patient_Histories.Add(patient_History);
+
+                    SqlCommand command = new SqlCommand("ViewPatientHistory", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader reader = command.ExecuteReader();
+
+
+
+
+
+                    while (reader.Read())
+                    {
+                        view_patient_history patient_History = new view_patient_history
+                        {
+                            Patient_Id = Convert.ToInt32(reader["Patient_Id"]),
+                            firstname = reader["firstname"].ToString(),
+                            lastname = reader["lastname"].ToString(),
+                            Phy_Id = reader["Phy_Id"].ToString()
+                        };
+
+                        patient_Histories.Add(patient_History);
+                    }
+
+                    reader.Close();
                 }
 
-             reader.Close();
+
+                return (patient_Histories);
             }
-
-
-         return (patient_Histories);
+            catch (Exception)
+            {
+                throw;
+            }
         }
+            
+        
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Business_Logic_Layer.Services.Login;
 using Data_Access_Layer.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS_API.Controllers
@@ -16,9 +15,18 @@ namespace HMS_API.Controllers
             _iServiceLogin = iServiceLogin;
         }
         [HttpPost("/Login")]
-        public string Login(Users user)
+        public IActionResult Login(Users user)
         {
-            return _iServiceLogin.AuthenticateUser(user.Username, user.Password);
+            try
+            {
+                string result = _iServiceLogin.AuthenticateUser(user.Username, user.Password);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while authenticating the user.");
+            }
         }
+
     }
 }

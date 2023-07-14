@@ -22,15 +22,31 @@ namespace HMS_API.Controllers
 
         [HttpGet("/GetSymptoms")]
 
-        public List<string> GetSymptoms()
+        public IActionResult GetSymptoms()
         {
-            return _IserviceViewHistory.GetSymptoms();
+            try
+            {
+                List<string> result = _IserviceViewHistory.GetSymptoms();
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpGet("/GetPatientHistory")]
-        public List<view_patient_history> GetPatientHistory()
+        public IActionResult GetPatientHistory()
         {
-            return _IserviceViewHistory.GetPatientHistory();
+            try
+            {
+                List<view_patient_history> result = _IserviceViewHistory.GetPatientHistory();
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
     }
 }

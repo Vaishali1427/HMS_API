@@ -1,18 +1,13 @@
 ﻿using Data_Access_Layer.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
 namespace Data_Access_Layer.DataAccess
 {
-    public class LoginRepository: ILoginRepository
+    public class LoginRepository : ILoginRepository
     {
         private readonly string connectionString;
 
@@ -22,48 +17,62 @@ namespace Data_Access_Layer.DataAccess
             _config = config;
             connectionString = config.GetConnectionString("DefaultConnection");
         }
+
+
         public string AuthenticateUser(string userId, string password)
         {
-            // Verify the user from the users table
-            bool isUserValid = VerifyUser(userId, password);
-
-
-
-            if (!isUserValid)
+            try
             {
-                // Return null or throw an exception indicating authentication failure
-                return "User Does not exists";
+                // Verify the user from the users table
+                bool isUserValid = VerifyUser(userId, password);
+
+
+
+                if (!isUserValid)
+                {
+                    // Return null or throw an exception indicating authentication failure
+                    return "User Does not exists";
+                }
+                string token = GenerateJwtToken(userId);
+
+
+
+                return String.Format("Token: {0}", token);
             }
-            string token = GenerateJwtToken(userId);
+            catch (Exception)
+            {
+                throw;
+            }
 
-
-
-            return String.Format("Token: {0}",token);
-        }
+        }    
+   
         public bool VerifyUser(string userId, string password)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-
-
-                // Check if the user exists in the database
-                string query = "SELECT COUNT(*) FROM users WHERE Username = @UserId AND User_Password = @Password";
-                using (SqlCommand command = new SqlCommand(query, connection))
+            
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.Parameters.AddWithValue("@UserId", userId);
-                    command.Parameters.AddWithValue("@Password", password);
+                    connection.Open();
 
 
 
-                    int count = (int)command.ExecuteScalar();
+                    // Check if the user exists in the database
+                    string query = "SELECT COUNT(*) FROM users WHERE Username = @UserId AND User_Password = @Password";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", userId);
+                        command.Parameters.AddWithValue("@Password", password);
 
 
 
-                    return count > 0;
+                        int count = (int)command.ExecuteScalar();
+
+
+
+                        return count > 0;
+                    }
+
                 }
-            }
+            
         }
 
 

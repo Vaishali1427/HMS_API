@@ -1,9 +1,7 @@
 ﻿using Business_Logic_Layer.Services.Patients;
-using Data_Access_Layer.Contracts;
 using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HMS_API.Controllers
@@ -22,22 +20,46 @@ namespace HMS_API.Controllers
         }
 
         [HttpPost("/AddPatient")]
-        public string AddPatient(Patient patient)
+        public IActionResult AddPatient(Patient patient)
         {
-            return _IservicePatient.AddPatient(patient);
+            try
+            {
+                string result = _IservicePatient.AddPatient(patient);
+                return Ok(result);
+            }
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the patient.");
+            }
         }
 
         [HttpGet("/GetPatientInsuranceDetails")]
         
-        public string GetInsurance(int id)
+        public IActionResult GetInsurance(int id)
         {
-            return _IservicePatient.GetInsurance(id);
+            try
+            {
+                string result = _IservicePatient.GetInsurance(id);
+                return Ok(result);
+            }
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the patient insurance details.");
+            }
         }
 
         [HttpPut("/UpdatePatientInsuranceDetails")]
-        public string UpdateInsurance(int id, Patient_Enroll insurance)
+        public IActionResult UpdateInsurance(int id, Patient_Enroll insurance)
         {
-            return _IservicePatient.UpdateInsurance(id, insurance).ToString();
+            try
+            {
+                string result = _IservicePatient.UpdateInsurance(id, insurance).ToString();
+                return Ok(result);
+            }
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating patient insurance details.");
+            }
         }
     }
 }
