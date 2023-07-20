@@ -106,33 +106,12 @@ namespace Data_Access_Layer.DataAccess
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-
-                    /*SqlCommand checkCommand = new SqlCommand("Select count(*) from patient_enroll where patient_id = @Patient_id",connection);
-                    checkCommand.Parameters.AddWithValue("Patient_id", id);
-                    int patientCount = (int)checkCommand.ExecuteScalar();
-                    if (patientCount == 0)
-                        return "Patient id does not exsists";*/
                     SqlCommand command = new SqlCommand("UpdateeInsurance", connection);
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@Patient_Id", id);
                     command.Parameters.AddWithValue("@Insurance", insurance.Insurance);
                     command.ExecuteNonQuery();
                     return "Insurance Updated Successfully";
-/*                    SqlDataReader reader = command.ExecuteReader();
-                    
-                    if (reader.Read())
-                    {
-                        PatientId = Convert.ToInt32(reader["Patient_Id"]);
-                        reader.Close();
-                        if (PatientId == 0)
-                        {
-                            return "Not Found";
-                        }
-                        return "Insurance Plan has been updated";
-                    }*/
-                   
-
-
 
                 }
 
