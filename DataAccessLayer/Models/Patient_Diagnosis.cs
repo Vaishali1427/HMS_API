@@ -7,9 +7,11 @@ namespace Data_Access_Layer.Models
     {
 
         [Required(ErrorMessage = "This field is required.")]
+        [RegularExpression(@"^[1-9]$", ErrorMessage = "Please enter valid integer number!")]
         public int Patient_Id { get; set; }
 
         [Required(ErrorMessage = "This field is required.")]
+        [RegularExpression(@"^[1-9]$", ErrorMessage = "Please enter valid integer number!")]
         public int Diagnosis_Id { get; set; }
 
         [Required(ErrorMessage = "This field is required.")]

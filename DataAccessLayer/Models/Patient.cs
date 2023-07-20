@@ -7,7 +7,7 @@ namespace Data_Access_Layer.Models
     public class Patient
     {
         [Required(ErrorMessage = "This field is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please enter valid integer number!")]
+        [RegularExpression(@"^[1-9]$", ErrorMessage = "Please enter valid integer number!")]
         public int Patient_Id { get; set; }
 
 
@@ -33,8 +33,8 @@ namespace Data_Access_Layer.Models
 
 
         [Required(ErrorMessage = "This field is required.")]
-        [RegularExpression(@"^\+\d{1,3}-\d{3}-\d{3}-\d{4}$", ErrorMessage = " Invalid Phone Number")]
-        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\+\d{1,3}-\d{3}\d{3}\d{4}$", ErrorMessage = " Invalid Phone Number")]
+
         public string? PhoneNo { get; set; }
 
 

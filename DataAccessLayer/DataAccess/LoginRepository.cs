@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace Data_Access_Layer.DataAccess
 {
@@ -56,11 +57,12 @@ namespace Data_Access_Layer.DataAccess
 
 
                     // Check if the user exists in the database
-                    string query = "SELECT COUNT(*) FROM users WHERE Username = @UserId AND User_Password = @Password";
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                   
+                using (SqlCommand command = new SqlCommand("UserLogin", connection))
                     {
-                        command.Parameters.AddWithValue("@UserId", userId);
-                        command.Parameters.AddWithValue("@Password", password);
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@Username", userId);
+                        command.Parameters.AddWithValue("@User_Password", password);
 
 
 
