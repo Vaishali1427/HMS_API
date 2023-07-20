@@ -3,6 +3,7 @@ using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace HMS_API.Controllers
 {
@@ -56,8 +57,12 @@ namespace HMS_API.Controllers
                 string result = _IservicePatient.UpdateInsurance(id, insurance).ToString();
                 return Ok(result);
             }
-            catch(Exception)
+            catch(SqlException ex)
             {
+                if (ex.Message.Contains("Patient Id does not exist."))
+                {
+                    return BadRequest("Patient Id does not exist.");
+                }
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating patient insurance details.");
             }
         }
