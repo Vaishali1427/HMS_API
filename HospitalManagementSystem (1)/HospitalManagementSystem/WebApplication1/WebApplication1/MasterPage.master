@@ -1,0 +1,57 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href="navbar.css" rel="stylesheet" type="text/css" />
+    
+    <style type="text/css">
+        .style1
+        {
+            width: 95%;
+            margin-left: 40px;
+        }
+        #form1
+        {
+            height: 713px;
+        }
+        .style3
+        {
+           width: 244px;
+        }
+        .style4
+        {
+            text-align: right;
+            width: 574px;
+        }
+         
+    </style>
+    
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+     <div class="Header">
+        <asp:Image ID="Image1" runat="server" Height="320px" 
+            ImageUrl="~/Images/banner4.jpg" Width="100%" />
+    
+  
+    </div>
+    
+    <div>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder2" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+    <div>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    
+</body>
+</html>

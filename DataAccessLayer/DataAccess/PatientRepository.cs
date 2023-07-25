@@ -106,7 +106,7 @@ namespace Data_Access_Layer.DataAccess
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("UpdateeInsurance", connection);
+                    SqlCommand command = new SqlCommand("UpdatesInsurance", connection);
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@Patient_Id", id);
                     command.Parameters.AddWithValue("@Insurance", insurance.Insurance);

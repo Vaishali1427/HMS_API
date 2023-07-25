@@ -6,7 +6,7 @@ namespace Data_Access_Layer.Models
     public class view_patient_history
     {
         [Required(ErrorMessage = "This field is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please enter a valid integer value!")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Please enter valid integer number!")]
         public int Patient_Id { get; set; }
 
 

@@ -28,9 +28,11 @@ namespace HMS_API.Controllers
                 string result = _IservicePatient.AddPatient(patient);
                 return Ok(result);
             }
-            catch(Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the patient.");
+                if (ex.Message.Contains("Violation of PRIMARY KEY constraint "))
+                    return BadRequest("Data already exists. Try with different patient Id.");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -45,7 +47,7 @@ namespace HMS_API.Controllers
             }
             catch(Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the patient insurance details.");
+                return BadRequest("No data found for this Id.");
             }
         }
 
